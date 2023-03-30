@@ -29,6 +29,29 @@ public enum Token {
     PERIOD("."),
     // THESE ARE NOT USED IN THE GRAMMAR, BUT MIGHT BE USEFUL...  :)
     $$, // End of file
+
+    //My addition
+    // Additional tokens
+    WHILE("while"),
+    DO("do"),
+    OD("od"),
+    IF("if"),
+    THEN("then"),
+    ELSE("else"),
+    FI("fi"),
+    READ("read"),
+    WRITE("write"),
+    ASSIGN_OP(":="),
+    LT("<"),
+    GT(">"),
+    LTE("<="),
+    GTE(">="),
+    EQ("="),
+    NEQ("!="),
+    LPAREN("("),
+    RPAREN(")"),
+    SEMICOLON(";"),
+    //End of my additions
     UNKNOWN, // Could be "ID" in a "real programming language"
     NUMBER; // A sequence of digits.
 

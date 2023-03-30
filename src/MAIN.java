@@ -55,6 +55,8 @@ public class MAIN {
             System.exit(1);
         }
 
+
+
         final File file = new File(filename);
 
         if (!file.exists() || !file.isFile() || !file.canRead()) {
