@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -45,13 +46,16 @@ public class MAIN {
 
 
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter input filename: ");
+        String filename = scanner.nextLine();
         // Check for an input file argument
-        if (args.length != 1) {
+        if (filename == null || filename.trim().isEmpty()) {
             System.err.println("Must Provide an input filename!!");
             System.exit(1);
         }
 
-        final File file = new File(args[0]);
+        final File file = new File(filename);
 
         if (!file.exists() || !file.isFile() || !file.canRead()) {
             System.err.printf("Input file not found: %s%n", file.toPath());
@@ -74,6 +78,7 @@ public class MAIN {
 
     private static String ScanAndParse(final File inputFile) throws IOException {
         // Create the code generator and lexical analyzer.
+
         final CodeGenerator codeGenerator = new CodeGenerator();
         final LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(inputFile);
 
