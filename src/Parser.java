@@ -125,9 +125,9 @@ public class Parser {
             this.MATCH(thisNode, Token.keywords);
             this.Program(thisNode);
         }
-//        } else {
-//            this.MATCH(thisNode, Token.PERIOD);
-//        }
+        else {
+            this.EMPTY(thisNode);
+     }
     }
     private void OPERATORS(final TreeNode parentNode) throws ParseException {
         final TreeNode thisNode = codeGenerator.addNonTerminalToTree(parentNode);
@@ -135,6 +135,9 @@ public class Parser {
         if (lexer.currentToken() == Token.operators) {
             this.MATCH(thisNode, Token.operators);
             this.Program(thisNode);
+        }
+        else {
+            this.EMPTY(thisNode);
         }
     }
 
@@ -145,6 +148,9 @@ public class Parser {
             this.MATCH(thisNode, Token.ID);
             this.Program(thisNode);
         }
+        else {
+            this.EMPTY(thisNode);
+        }
     }
 
     private void NUM(final TreeNode parentNode) throws ParseException {
@@ -153,6 +159,9 @@ public class Parser {
         if (lexer.currentToken() == Token.NUMBER) {
             this.MATCH(thisNode, Token.NUMBER);
             this.Program(thisNode);
+        }
+        else {
+            this.EMPTY(thisNode);
         }
     }
 

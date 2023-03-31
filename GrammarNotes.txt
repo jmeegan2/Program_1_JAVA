@@ -1,8 +1,7 @@
 program -> stmt_list $$
 stmt_list -> stmt stmt_list | (epsilon)
 restricted_stmt_list -> restricted_stmt restricted_stmt_list | (epsilon)
-stmt -> id := expr | read id | write expr | while_stmt | if_stmt | do_until_stmt
-restricted_stmt -> id := expr | read id | write expr | while_stmt | if_stmt
+stmt -> id := expr | read id | write expr 
 expr -> expo
 expo -> term term_tail
 term_tail -> add_op term term_tail | (epsilon)
@@ -14,6 +13,8 @@ mult_op -> * | /
 condition -> expr relation expr
 relation -> < | > | <= | >= | = | !=
 
+
+Additional rules:
 while_stmt -> while condition do restricted_stmt_list od
 if_stmt -> if condition then stmt_list else_part fi
 else_part -> else stmt_list | (epsilon)
