@@ -46,18 +46,13 @@ public class MAIN {
 
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter input filename: ");
-        String filename = scanner.nextLine();
         // Check for an input file argument
-        if (filename == null || filename.trim().isEmpty()) {
+        if (args.length != 1) {
             System.err.println("Must Provide an input filename!!");
             System.exit(1);
         }
 
-
-
-        final File file = new File(filename);
+        final File file = new File(args[0]);
 
         if (!file.exists() || !file.isFile() || !file.canRead()) {
             System.err.printf("Input file not found: %s%n", file.toPath());

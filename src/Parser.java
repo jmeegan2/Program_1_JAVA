@@ -105,6 +105,8 @@ public class Parser {
 //        this.VERB_PHRASE(thisNode);
 //        this.NOUN_PHRASE(thisNode);
 //        this.PREP_PHRASE(thisNode);
+//        this.SENTENCE_TAIL(thisNode);
+
         this.KEYWORDS(thisNode);
         this.OPERATORS(thisNode);
         this.IDENTIFIER(thisNode);
@@ -153,72 +155,23 @@ public class Parser {
             this.Program(thisNode);
         }
     }
-    /////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Add a an EMPTY terminal node (result of an Epsilon Production) to the parse tree.
-     * Mainly, this is just done for better visualizing the complete parse tree.
-     *
-     * @param parentNode The parent of the terminal node.
-     */
-    void EMPTY(final TreeNode parentNode) {
-        codeGenerator.addEmptyToTree(parentNode);
-    }
-
-    /**
-     * Match the current token with the expected token.
-     * If they match, add the token to the parse tree, otherwise throw an exception.
-     *
-     * @param parentNode    The parent of the terminal node.
-     * @param expectedToken The token to be matched.
-     * @throws ParseException Thrown if the token does not match the expected token.
-     */
-    void MATCH(final TreeNode parentNode, final Token expectedToken) throws ParseException {
-        final Token currentToken = lexer.currentToken();
-
-        if (currentToken == expectedToken) {
-            var currentLexeme = lexer.getCurrentLexeme();
-            this.addTerminalToTree(parentNode, currentToken, currentLexeme);
-            lexer.advanceToken();
-        } else {
-            this.raiseException(expectedToken, parentNode);
-        }
-    }
 
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Add a terminal node to the parse tree.
-     *
-     * @param parentNode    The parent of the terminal node.
-     * @param currentToken  The token to be added.
-     * @param currentLexeme The lexeme of the token beign added.
-     * @throws ParseException Throws a ParseException if the token cannot be added to the tree.
-     */
-    void addTerminalToTree(final TreeNode parentNode, final Token currentToken, final String currentLexeme) throws ParseException {
-        var nodeLabel = "<%s>".formatted(currentToken);
-        var terminalNode = codeGenerator.addNonTerminalToTree(parentNode, nodeLabel);
-
-        codeGenerator.addTerminalToTree(terminalNode, currentLexeme);
-    }
-
-    /**
-     * Raise a ParseException if the input cannot be parsed as defined by the grammar.
-     *
-     * @param expected   The expected token
-     * @param parentNode The token's parent node
-     */
-    private void raiseException(Token expected, TreeNode parentNode) throws ParseException {
-        final var template = "SYNTAX ERROR: '%s' was expected but '%s' was found.";
-        final var errorMessage = template.formatted(expected.name(), lexer.getCurrentLexeme());
-        codeGenerator.syntaxError(errorMessage, parentNode);
-    }
-}
 
 
-//old code
-// <NOUN_PHRASE> ::= <ART> <ADJ_LIST> <NOUN>
+    ////////////OLD/////////////////
+//    private void SENTENCE_TAIL(final TreeNode parentNode) throws ParseException {
+//        final TreeNode thisNode = codeGenerator.addNonTerminalToTree(parentNode);
+//
+//        if (lexer.currentToken() == Token.CONJUNCTION) {
+//            this.MATCH(thisNode, Token.CONJUNCTION);
+//            this.Program(thisNode);
+//        } else {
+//            this.MATCH(thisNode, Token.PERIOD);
+//        }
+//    }
+//
+//    // <NOUN_PHRASE> ::= <ART> <ADJ_LIST> <NOUN>
 //    private void NOUN_PHRASE(final TreeNode parentNode) throws ParseException {
 //        final TreeNode thisNode = codeGenerator.addNonTerminalToTree(parentNode);
 //
@@ -274,3 +227,70 @@ public class Parser {
 //            this.EMPTY(thisNode);
 //        }
 //    }
+
+    ////////////OLD/////////////////
+
+
+    /////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Add a an EMPTY terminal node (result of an Epsilon Production) to the parse tree.
+     * Mainly, this is just done for better visualizing the complete parse tree.
+     *
+     * @param parentNode The parent of the terminal node.
+     */
+    void EMPTY(final TreeNode parentNode) {
+        codeGenerator.addEmptyToTree(parentNode);
+    }
+
+    /**
+     * Match the current token with the expected token.
+     * If they match, add the token to the parse tree, otherwise throw an exception.
+     *
+     * @param parentNode    The parent of the terminal node.
+     * @param expectedToken The token to be matched.
+     * @throws ParseException Thrown if the token does not match the expected token.
+     */
+    void MATCH(final TreeNode parentNode, final Token expectedToken) throws ParseException {
+        final Token currentToken = lexer.currentToken();
+
+        if (currentToken == expectedToken) {
+            var currentLexeme = lexer.getCurrentLexeme();
+            this.addTerminalToTree(parentNode, currentToken, currentLexeme);
+            lexer.advanceToken();
+        } else {
+            this.raiseException(expectedToken, parentNode);
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Add a terminal node to the parse tree.
+     *
+     * @param parentNode    The parent of the terminal node.
+     * @param currentToken  The token to be added.
+     * @param currentLexeme The lexeme of the token beign added.
+     * @throws ParseException Throws a ParseException if the token cannot be added to the tree.
+     */
+    void addTerminalToTree(final TreeNode parentNode, final Token currentToken, final String currentLexeme) throws ParseException {
+        var nodeLabel = "<%s>".formatted(currentToken);
+        var terminalNode = codeGenerator.addNonTerminalToTree(parentNode, nodeLabel);
+
+        codeGenerator.addTerminalToTree(terminalNode, currentLexeme);
+    }
+
+    /**
+     * Raise a ParseException if the input cannot be parsed as defined by the grammar.
+     *
+     * @param expected   The expected token
+     * @param parentNode The token's parent node
+     */
+    private void raiseException(Token expected, TreeNode parentNode) throws ParseException {
+        final var template = "SYNTAX ERROR: '%s' was expected but '%s' was found.";
+        final var errorMessage = template.formatted(expected.name(), lexer.getCurrentLexeme());
+        codeGenerator.syntaxError(errorMessage, parentNode);
+    }
+}
+
+
