@@ -32,25 +32,10 @@ public enum Token {
 
     //My addition
     // Additional tokens
-    WHILE("while"),
-    DO("do"),
-    OD("od"),
-    IF("if"),
-    THEN("then"),
-    ELSE("else"),
-    FI("fi"),
-    READ("read"),
-    WRITE("write"),
-    ASSIGN_OP(":="),
-    LT("<"),
-    GT(">"),
-    LTE("<="),
-    GTE(">="),
-    EQ("="),
-    NEQ("!="),
-    LPAREN("("),
-    RPAREN(")"),
-    SEMICOLON(";"),
+    keywords ("while","do", "od", "if", "then", "else", "fi", "read", "write","until" ),
+    operators (":=", "<", ">", "<=", ">=", "=", "!=", "(", ")", ";", "%","+","-","*","=","/"),
+    ID("sum" , "count", "n" , "abs"),
+
     //End of my additions
     UNKNOWN, // Could be "ID" in a "real programming language"
     NUMBER; // A sequence of digits.

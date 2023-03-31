@@ -1,0 +1,1 @@
+while do od if then else fi read write
