@@ -18,27 +18,38 @@ import java.util.List;
  * *** This is generally NOT the case in most programming languages!!! ***
  */
 public enum Token {
-    ARTICLE("a", "the"),
-    CONJUNCTION("and", "or"),
-    NOUN("dog", "cat", "rat", "house", "tree"),
-    VERB("loves", "hates", "eats", "chases", "stalks"),
-    ADJECTIVE("fast", "slow", "furry", "sneaky", "lazy", "tall"),
-    ADJ_SEP(","),
-    ADVERB("quickly", "secretly", "silently"),
-    PREPOSITION("of", "on", "around", "with", "up"),
-    PERIOD("."),
-    // THESE ARE NOT USED IN THE GRAMMAR, BUT MIGHT BE USEFUL...  :)
-    $$, // End of file
+    // Keywords
+    READ("read"),
+    WRITE("write"),
+    WHILE("while"),
+    DO("do"),
+    OD("od"),
+    IF("if"),
+    THEN("then"),
+    ELSE("else"),
+    FI("fi"),
+    UNTIL("until"),
 
-    //My addition
-    // Additional tokens
-    keywords ("while","do", "od", "if", "then", "else", "fi", "read", "write","until" ),
-    operators (":=", "<", ">", "<=", ">=", "=", "!=", "(", ")", ";", "%","+","-","*","=","/"),
+    // Operators
+    ASSIGN_OP(":="),
+    ADD_OP("+", "-"),
+    MULT_OP("*", "/"),
+    LEFT_PAREN("("),
+    RIGHT_PAREN(")"),
+    REL_OP("<", ">", "<=", ">=", "=", "!="),
+
+    // Identifiers and Numbers
     ID("sum" , "count", "n" , "abs"),
+    NUMBER,
 
-    //End of my additions
-    UNKNOWN, // Could be "ID" in a "real programming language"
-    NUMBER; // A sequence of digits.
+    // End of File
+    EOF,
+
+    // Unknown
+    $$, // End of file
+    // Unknown
+    UNKNOWN;
+
 
     /**
      * A list of all lexemes for each token.
@@ -49,6 +60,7 @@ public enum Token {
         this.lexemeList = new ArrayList<>(tokenStrings.length);
         this.lexemeList.addAll(Arrays.asList(tokenStrings));
     }
+
 
     /**
      * Get a Token object from the Lexeme string.
