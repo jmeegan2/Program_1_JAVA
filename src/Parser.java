@@ -105,7 +105,7 @@ public class Parser {
 
     private void StmtList(final TreeNode parentNode) throws ParseException {
         final TreeNode thisNode = codeGenerator.addNonTerminalToTree(parentNode, "StmtList");
-        if (lexer.currentToken() == Token.ID || lexer.currentToken() == Token.READ || lexer.currentToken() == Token.WRITE) {
+        if (lexer.currentToken() == Token.ID || lexer.currentToken() == Token.READ || lexer.currentToken() == Token.WRITE || lexer.currentToken() == Token.IF || lexer.currentToken() == Token.WHILE) {
             stmt(thisNode);
             StmtList(thisNode);
         } else {
@@ -136,9 +136,25 @@ public class Parser {
             case WHILE:
                 while_stmt(thisNode);
                 break;
+            case DO: // Add new case for the "do" keyword
+                do_until_stmt(thisNode);
+                break;
+            case EOF:
+                // Handle end of file token
+                break;
+
             default:
                 EMPTY(thisNode);
         }
+    }
+
+    private void do_until_stmt(final TreeNode parentNode) throws ParseException {
+        final TreeNode thisNode = codeGenerator.addNonTerminalToTree(parentNode, "<do_until_stmt>");
+
+        MATCH(thisNode, Token.DO);
+        StmtList(thisNode);
+        MATCH(thisNode, Token.UNTIL);
+        condition(thisNode);
     }
 
     private void if_stmt(final TreeNode parentNode) throws ParseException {
