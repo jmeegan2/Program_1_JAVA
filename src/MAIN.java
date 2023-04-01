@@ -149,6 +149,8 @@ class LexicalAnalyzer {
      *
      * @return the Lexeme as an Optional string since an empty list has no tokens.
      */
+
+    //this was my error I didn't have this set to Token.EOF when I was using EOF for end of file, my fault
     public String getCurrentLexeme() {
         return (this.tokenList.isEmpty() || this.currentToken() == Token.$$) ? "EOF" : this.tokenList.peek().lexeme;
     }
