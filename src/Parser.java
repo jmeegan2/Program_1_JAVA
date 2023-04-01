@@ -165,8 +165,15 @@ public class Parser {
         MATCH(thisNode, Token.THEN);
         StmtList(thisNode);
         else_part(thisNode);
-        MATCH(thisNode, Token.FI);
+        if (lexer.currentToken() == Token.FI) {
+            MATCH(thisNode, Token.FI);
+        } else if (lexer.currentToken() == Token.IF) {
+            if_stmt(thisNode);
+        } else {
+            raiseException(Token.FI, thisNode);
+        }
     }
+
 
     private void else_part(final TreeNode parentNode) throws ParseException {
         final TreeNode thisNode = codeGenerator.addNonTerminalToTree(parentNode, "<else_part>");
@@ -174,10 +181,13 @@ public class Parser {
         if (lexer.currentToken() == Token.ELSE) {
             MATCH(thisNode, Token.ELSE);
             StmtList(thisNode);
-        } else {
+        } else if (lexer.currentToken() == Token.FI || lexer.currentToken() == Token.EOF) {
             EMPTY(thisNode);
+        } else {
+            stmt(thisNode);
         }
     }
+
 
     private void while_stmt(final TreeNode parentNode) throws ParseException {
         final TreeNode thisNode = codeGenerator.addNonTerminalToTree(parentNode, "<while_stmt>");
