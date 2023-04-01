@@ -41,11 +41,6 @@ public enum Token {
     // Identifiers and Numbers
     ID("sum" , "count", "n" , "abs"),
     NUMBER,
-
-    // End of File
-    EOF,
-
-    // Unknown
     $$, // End of file
     // Unknown
     UNKNOWN;

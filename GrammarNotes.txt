@@ -1,6 +1,5 @@
 program -> stmt_list $$
 stmt_list -> stmt stmt_list | (epsilon)
-restricted_stmt_list -> restricted_stmt restricted_stmt_list | (epsilon)
 stmt -> id := expr | read id | write expr 
 expr -> expo
 expo -> term term_tail

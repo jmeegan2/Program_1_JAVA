@@ -1,13 +1,1 @@
 sum := 0
-
-read count
-
-while count > 0 do
-
-read n
-
-sum := sum + n
-
-count := count - 1
-
-od
