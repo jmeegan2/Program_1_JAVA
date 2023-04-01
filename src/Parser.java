@@ -1,5 +1,6 @@
 //  ************** REQUIRES JAVA 17 OR ABOVE! (https://adoptium.net/) ************** //
 
+//import java.util.Objects;
 import java.util.logging.Logger;
 
 public class Parser {
@@ -76,12 +77,7 @@ public class Parser {
                 || lexer.currentToken() == Token.IF || lexer.currentToken() == Token.WHILE || lexer.currentToken() == Token.DO) {
             stmt(thisNode);
         }
-        if (lexer.currentToken() == Token.ELSE || lexer.currentToken() == Token.FI || lexer.currentToken() == Token.OD) {
-            // Stop the recursion when an ELSE, FI, or OD token is encountered
-            EMPTY(thisNode);
-        } else {
-            EMPTY(thisNode);
-        }
+        EMPTY(thisNode);
     }
 
 
@@ -91,30 +87,23 @@ public class Parser {
         final TreeNode thisNode = codeGenerator.addNonTerminalToTree(parentNode, "<stmt>");
 
         switch (lexer.currentToken()) {
-            case ID:
+            case ID -> {
                 MATCH(thisNode, Token.ID);
                 MATCH(thisNode, Token.ASSIGN_OP);
                 Expr(thisNode);
-                break;
-            case READ:
+            }
+            case READ -> {
                 MATCH(thisNode, Token.READ);
                 MATCH(thisNode, Token.ID);
-                break;
-            case WRITE:
+            }
+            case WRITE -> {
                 MATCH(thisNode, Token.WRITE);
                 Expr(thisNode);
-                break;
-            case IF:
-                if_stmt(thisNode);
-                break;
-            case WHILE:
-                while_stmt(thisNode);
-                break;
-            case DO:
-                do_until_stmt(thisNode);
-                break;
-            default:
-                EMPTY(thisNode);
+            }
+            case IF -> if_stmt(thisNode);
+            case WHILE -> while_stmt(thisNode);
+            case DO -> do_until_stmt(thisNode);
+            default -> EMPTY(thisNode);
         }
     }
 
@@ -160,10 +149,11 @@ public class Parser {
     private void else_part(final TreeNode parentNode) throws ParseException {
         final TreeNode thisNode = codeGenerator.addNonTerminalToTree(parentNode, "<else_part>");
 
-        MATCH(thisNode, Token.ELSE);
-        StmtList(thisNode); // Add a new StmtList as a child of the current StmtList
+        if (lexer.currentToken() == Token.ELSE) {
+            MATCH(thisNode, Token.ELSE);
+            StmtList(thisNode);
+        }
     }
-
 
     private void while_stmt(final TreeNode parentNode) throws ParseException {
         final TreeNode thisNode = codeGenerator.addNonTerminalToTree(parentNode, "<while_stmt>");
@@ -272,6 +262,21 @@ public class Parser {
             this.raiseException(expectedToken, parentNode);
         }
     }
+
+
+//    private void add_op(final TreeNode parentNode) throws ParseException {
+//        final TreeNode thisNode = codeGenerator.addNonTerminalToTree(parentNode, "add_op");
+//        if (Objects.requireNonNull(lexer.currentToken()) == Token.ADD_OP) {
+//            MATCH(thisNode, Token.ADD_OP);
+//        }
+//    }
+//
+//    private void mult_op(final TreeNode parentNode) throws ParseException {
+//        final TreeNode thisNode = codeGenerator.addNonTerminalToTree(parentNode, "mult_op");
+//        if (Objects.requireNonNull(lexer.currentToken()) == Token.MULT_OP) {
+//            MATCH(thisNode, Token.MULT_OP);
+//        }
+//    }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
