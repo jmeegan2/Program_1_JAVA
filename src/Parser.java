@@ -100,13 +100,13 @@ public class Parser {
     private void Program(final TreeNode parentNode) throws ParseException {
         final TreeNode thisNode = codeGenerator.addNonTerminalToTree(parentNode, "Program");
         StmtList(thisNode);
-        MATCH(thisNode, Token.$$); // Ensure that we have parsed the entire input.
     }
 
 
     private void StmtList(final TreeNode parentNode) throws ParseException {
         final TreeNode thisNode = codeGenerator.addNonTerminalToTree(parentNode, "StmtList");
-        if (lexer.currentToken() == Token.ID || lexer.currentToken() == Token.READ || lexer.currentToken() == Token.WRITE || lexer.currentToken() == Token.IF || lexer.currentToken() == Token.WHILE) {
+        if (lexer.currentToken() == Token.ID || lexer.currentToken() == Token.READ || lexer.currentToken() == Token.WRITE
+                || lexer.currentToken() == Token.IF || lexer.currentToken() == Token.WHILE || lexer.currentToken() == Token.FI) {
             stmt(thisNode);
             StmtList(thisNode);
         } else {
@@ -140,6 +140,8 @@ public class Parser {
             case DO: // Add new case for the "do" keyword
                 do_until_stmt(thisNode);
                 break;
+            case FI:
+                fi_stmt(thisNode);
             case $$:
                 // Handle end of file token
                 break;
@@ -166,12 +168,22 @@ public class Parser {
         MATCH(thisNode, Token.THEN);
         StmtList(thisNode);
         else_part(thisNode);
-        if (lexer.currentToken() == Token.FI) {
-            MATCH(thisNode, Token.FI);
+
+    }
+    private void fi_stmt(final TreeNode parentNode) throws ParseException {
+        final TreeNode thisNode = codeGenerator.addNonTerminalToTree(parentNode, "<fi_stmt>");
+
+        MATCH(thisNode, Token.FI);
+        condition(thisNode);
+        MATCH(thisNode, Token.THEN);
+        StmtList(thisNode);
+        else_part(thisNode);
+        if (lexer.currentToken() == Token.IF) {
+            MATCH(thisNode, Token.IF);
         } else if (lexer.currentToken() == Token.IF) {
-            if_stmt(thisNode);
+            fi_stmt(thisNode);
         } else {
-            raiseException(Token.FI, thisNode);
+            raiseException(Token.IF, thisNode);
         }
     }
 
@@ -247,7 +259,6 @@ public class Parser {
             EMPTY(thisNode);
         }
     }
-
     private void Factor(final TreeNode parentNode) throws ParseException {
         final TreeNode thisNode = codeGenerator.addNonTerminalToTree(parentNode, "Factor");
         if (lexer.currentToken() == Token.LEFT_PAREN) {
@@ -297,6 +308,13 @@ public class Parser {
             this.raiseException(expectedToken, parentNode);
         }
     }
+
+//    private void fi_stmt(final TreeNode parentNode) throws ParseException {
+//        final TreeNode thisNode = codeGenerator.addNonTerminalToTree(parentNode, "<fi_stmt>");
+//        MATCH(thisNode, Token.FI);
+//        // Add any additional rules or processing needed for the "fi" keyword
+//    }
+
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 

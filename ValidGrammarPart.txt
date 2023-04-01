@@ -1,1 +1,27 @@
 sum := 0
+
+read count
+
+while count > 0 do
+
+read n
+
+sum := sum + n
+
+count := count - 1
+
+od
+
+abs := n
+
+if n < 0 then
+
+abs := 0 - abs
+
+do
+//else
+sum := sum * ( 1 + n ) / 100
+
+until sum >= 100
+
+fi
