@@ -80,9 +80,6 @@ public class Parser {
         EMPTY(thisNode);
     }
 
-
-
-
     private void stmt(final TreeNode parentNode) throws ParseException {
         final TreeNode thisNode = codeGenerator.addNonTerminalToTree(parentNode, "<stmt>");
 
@@ -129,22 +126,6 @@ public class Parser {
         }
         MATCH(thisNode, Token.FI);
     }
-
-
-    private void fi_stmt(final TreeNode parentNode) throws ParseException {
-        final TreeNode thisNode = codeGenerator.addNonTerminalToTree(parentNode, "<fi_stmt>");
-
-        if (lexer.currentToken() == Token.FI) {
-            MATCH(thisNode, Token.FI);
-            StmtList(thisNode);
-        } else if (lexer.currentToken()==Token.IF || lexer.currentToken() == Token.$$) {
-            EMPTY(thisNode);
-        } else {
-            stmt(thisNode);
-        }
-
-    }
-
 
     private void else_part(final TreeNode parentNode) throws ParseException {
         final TreeNode thisNode = codeGenerator.addNonTerminalToTree(parentNode, "<else_part>");
@@ -228,13 +209,10 @@ public class Parser {
         }
     }
 
-
-
-
     /////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Add a an EMPTY terminal node (result of an Epsilon Production) to the parse tree.
+     * Add a EMPTY terminal node (result of an Epsilon Production) to the parse tree.
      * Mainly, this is just done for better visualizing the complete parse tree.
      *
      * @param parentNode The parent of the terminal node.
@@ -263,21 +241,6 @@ public class Parser {
         }
     }
 
-
-//    private void add_op(final TreeNode parentNode) throws ParseException {
-//        final TreeNode thisNode = codeGenerator.addNonTerminalToTree(parentNode, "add_op");
-//        if (Objects.requireNonNull(lexer.currentToken()) == Token.ADD_OP) {
-//            MATCH(thisNode, Token.ADD_OP);
-//        }
-//    }
-//
-//    private void mult_op(final TreeNode parentNode) throws ParseException {
-//        final TreeNode thisNode = codeGenerator.addNonTerminalToTree(parentNode, "mult_op");
-//        if (Objects.requireNonNull(lexer.currentToken()) == Token.MULT_OP) {
-//            MATCH(thisNode, Token.MULT_OP);
-//        }
-//    }
-
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -285,7 +248,7 @@ public class Parser {
      *
      * @param parentNode    The parent of the terminal node.
      * @param currentToken  The token to be added.
-     * @param currentLexeme The lexeme of the token beign added.
+     * @param currentLexeme The lexeme of the token being added.
      * @throws ParseException Throws a ParseException if the token cannot be added to the tree.
      */
     void addTerminalToTree(final TreeNode parentNode, final Token currentToken, final String currentLexeme) throws ParseException {
